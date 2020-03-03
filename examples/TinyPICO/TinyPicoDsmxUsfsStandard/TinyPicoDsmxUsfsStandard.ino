@@ -1,5 +1,5 @@
 /*
-   Hackflight sketch for TinyPICO with Ultimate Sensor Fusion Solution IMU and DSMX receiver
+   Hackflight sketch for TinyPICO with DSMX receiver, Ultimate Sensor Fusion Solution IMU, and standard motors
 
    Additional libraries needed:
 
