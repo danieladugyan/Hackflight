@@ -7,11 +7,18 @@
 #include <Adafruit_FXAS21002C.h>
 
 namespace hf {
-    Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
-    Adafruit_FXOS8700 accelmagmeter = Adafruit_FXOS8700(0x8700A, 0x8700B);
-    Adafruit_Sensor_Calibration_EEPROM cal;
-
     class NXPSoftwareQuaternionIMU : public SoftwareQuaternion9DoFIMU {
+        private:
+            Adafruit_FXAS21002C gyro = Adafruit_FXAS21002C(0x0021002C);
+            Adafruit_FXOS8700 accelmagmeter = Adafruit_FXOS8700(0x8700A, 0x8700B);
+            Adafruit_Sensor_Calibration_EEPROM cal;
+            
+            float mss2gs(float mss)
+            {
+                return mss / 9.8665;
+            }
+
+        
         protected:
             virtual void begin(void) override
             {
@@ -56,9 +63,9 @@ namespace hf {
                 cal.calibrate(accevent);
                 cal.calibrate(magevent);
 
-                ax = accevent.acceleration.x;
-                ay = accevent.acceleration.y;
-                az = accevent.acceleration.z;
+                ax = mss2gs(accevent.acceleration.x);
+                ay = mss2gs(accevent.acceleration.y);
+                az = mss2gs(accevent.acceleration.z);
 
                 mx = magevent.magnetic.x;
                 my = magevent.magnetic.y;
