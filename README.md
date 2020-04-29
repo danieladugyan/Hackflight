@@ -1,3 +1,7 @@
+This fork contains some changes specific to my drone build. If you've chosen to use my exact components detailed in my report, I recommend starting by checking out the code in this example. This can be uploaded to an ESP32. Go ahead and play around with the two receivers added (dualshock and espnow), or maybe the various motor protocols. Good luck!
+
+<hr>
+
 <p align="center"> 
 <img src="extras/media/logo.png" width=450>
 </p>
