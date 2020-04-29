@@ -1,5 +1,7 @@
 This fork contains some changes specific to my drone build. If you've chosen to use my exact components detailed in my report, I recommend starting by checking out the code in <a href="https://github.com/danieladugyan/Hackflight/blob/danielfork/examples/DA_HackflightESP32_FC.ino">this example</a>. This can be uploaded to an ESP32. Go ahead and play around with the two receivers added (dualshock and espnow), or maybe the various motor protocols. Good luck!
 
+// Daniel Adu-Gyan @danieladugyan
+
 <hr>
 
 <p align="center"> 
