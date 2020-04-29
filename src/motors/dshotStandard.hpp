@@ -1,5 +1,5 @@
 /*
-   Arduino code for brushless motors running on MultiShot ESC
+   Arduino code for brushless motor running on standard ESC
 
    Copyright (c) 2018 Juan Gallostra Acin, Simon D. Levy, Pep Martí Saumell
 
@@ -21,41 +21,37 @@
 #pragma once
 
 #include "motor.hpp"
+#include "motors/esp32dshot600.hpp"
 
 namespace hf {
 
-    class MultiShotMotor : public Motor {
+    class DshotMotor : public Motor {
 
         private:
-
-            const uint16_t _channel = 1;
-            uint16_t _pin;
-
-            // Min, max PWM values, experimental values, should be 819-4095?
-            const uint16_t PWM_MIN = 400;
-            const uint16_t PWM_MAX = 2000;
+            Esp32DShot600 * _motors;
+            uint8_t _index;
 
         public:
 
-            MultiShotMotor(uint8_t pin) 
+            DshotMotor(uint8_t pin, Esp32DShot600 * motors, uint8_t index) 
                 : Motor(pin)
             {
-                _pin = pin;
+                _motors = motors;
+                _motors->addMotor(pin);
+                _index = index;
             }
 
             virtual void init(void) override
             {
-                ledcSetup(_channel, 20000, 13); // 20 kHz, 13-bit resolution
-                ledcAttachPin(_pin, _channel);
-                ledcWrite(_channel, PWM_MIN);
+                pinMode(_pin, OUTPUT);
+                _motors->begin();
             }
 
             virtual void write(float value) override
-            {
-                value = Filter::round2(value); // round to two decimal places
-                ledcWrite(_channel, (uint16_t)(PWM_MIN+value*(PWM_MAX-PWM_MIN)));
+            { 
+                _motors->writeMotor(_index, value); // value is in range [0, 1]
             }
 
-    }; // class MultiShotMotor
+    }; // class DshotMotor
 
 } // namespace hf

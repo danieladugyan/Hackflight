@@ -186,7 +186,8 @@ namespace hf {
                 demands.throttle = throttleFun(rawvals[_channelMap[CHANNEL_THROTTLE]]);
 
                 // Store auxiliary switch state
-                _aux1State = getRawval(CHANNEL_AUX1) >= 0.0 ? (getRawval(CHANNEL_AUX1) > AUX_THRESHOLD ? 2 : 1) : 0;
+                //_aux1State = getRawval(CHANNEL_AUX1) >= 0.0 ? (getRawval(CHANNEL_AUX1) > AUX_THRESHOLD ? 2 : 1) : 0;
+                _aux1State = getRawval(CHANNEL_AUX1) >= AUX_THRESHOLD ? 1 : 0;
                 _aux2State = getRawval(CHANNEL_AUX2) >= AUX_THRESHOLD ? 1 : 0;
 
                 // Got a new frame

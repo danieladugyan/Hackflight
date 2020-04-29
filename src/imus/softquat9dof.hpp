@@ -58,8 +58,8 @@ namespace hf {
 
             // Quaternion support: even though MPU9250 has a magnetometer, we keep it simple for now by 
             // using a 6DOF fiter (accel, gyro)
-            //MadgwickQuaternionFilter9DOF _quaternionFilter = MadgwickQuaternionFilter9DOF(_beta);
-            MahonyQuaternionFilter9DOF _quaternionFilter = MahonyQuaternionFilter9DOF();
+            MadgwickQuaternionFilter9DOF _quaternionFilter = MadgwickQuaternionFilter9DOF(_beta);
+            //MahonyQuaternionFilter9DOF _quaternionFilter = MahonyQuaternionFilter9DOF();
             //Adafruit_Madgwick _quaternionFilter;
 
             virtual bool imuReady(void) = 0;

@@ -33,11 +33,14 @@ namespace hf {
 
         private:
 
+            uint8_t _led_pin = 2;
+            bool    _led_inverted = false;
+
         protected:
 
             void setLed(bool isOn) 
             { 
-                digitalWrite(2, HIGH);
+                digitalWrite(_led_pin, isOn ?  (_led_inverted?LOW:HIGH) : (_led_inverted?HIGH:LOW));
             }
 
             uint8_t serialNormalAvailable(void)
@@ -59,6 +62,9 @@ namespace hf {
 
             ESPDEV(void) 
             {
+                pinMode(_led_pin, OUTPUT);
+                digitalWrite(_led_pin, _led_inverted ? HIGH : LOW);
+                
                 Serial.begin(115200);
 
                 // This will blink the LED

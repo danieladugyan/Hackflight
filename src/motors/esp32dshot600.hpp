@@ -33,6 +33,21 @@
 
 #include "esp32-hal.h"
 
+/*
+motor_t är "object literal" (struct) för varje motor
+
+dshotPacket[16] är datan som skickas
+rmt_send är rmt_obj_s, innehåller ->pin, ->channel etc.
+outputValue är ett tal från 47-2048
+
+_motors är array av motor_t
+
+
+dshot600 - max rate är 37,5 kHz
+       act max rate är 16   kHz
+       => gap är 35,8 uS
+*/
+
 namespace hf {
 
     class Esp32DShot600 {
@@ -56,9 +71,9 @@ namespace hf {
 
             } motor_t;
 
-            motor_t _motors[MAX_MOTORS] = {};
+            motor_t _motors[MAX_MOTORS] = {}; // array of data structs, each one corresponds to a motor
 
-            uint8_t _motorCount = 0;
+            uint8_t _motorCount = 0; // get's increased upon each motor add
 
             static void coreTask(void * params)
             {
@@ -71,7 +86,7 @@ namespace hf {
                         dshot->outputOne(&dshot->_motors[k]);
                     }
 
-                    delay(1);
+                    delayMicroseconds(60); // should be lower (real gap should be 35,833 us)
                 } 
             }
 
@@ -109,6 +124,7 @@ namespace hf {
                     packet <<= 1;
                 }
 
+                
                 rmtWrite(motor->rmt_send, motor->dshotPacket, 16);
 
             } // outputOne
@@ -154,6 +170,11 @@ namespace hf {
             void writeMotor(uint8_t index, float value)
             {
                 _motors[index].outputValue = MIN + (uint16_t)(value * (MAX-MIN));
+            }
+
+            void printMotorCount(void)
+            {
+                Serial.println(_motorCount); // debugging
             }
 
     }; // class Esp32DShot600
